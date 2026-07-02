@@ -1,13 +1,17 @@
 -- Write your PostgreSQL query statement below
-    
-select Department,Employee,Salary 
-from (    
-    select D.name as Department,
-        E.name as Employee,
-        E.salary as Salary,
-    DENSE_RANK() over(partition by D.name
-                        order by Salary desc
-                        ) as rank 
-    from Employee E JOIN Department D on E.departmentId=D.id)
-    where rank<=3;
+
+With CTE as(
+        select *,
+        DENSE_RANK() over( partition by departmentId
+                            order by Salary desc) as rnk 
+        from Employee
+)
+
+select d.name as Department,
+        e.name as Employee,
+        e.salary as Salary
+        from Department d 
+        join CTE e on e.departmentId=d.id
+        where rnk<=3;
+
 
