@@ -1,32 +1,25 @@
 class Solution {
 public:
-    int solve(int i,int j,int m,int n,vector<vector<int>>& grid,vector<vector<int>>& dp){
-        if(i==m-1 && j==n-1){
-            return dp[i][j]=grid[i][j];
-        }
+    int DFS(vector<vector<int>>& grid, int m, int n) {
+        vector<vector<int>> t(m, vector<int>(n));
+        t[0][0] = grid[0][0];
+        
+        for(int i = 1; i<m; i++) // fill 1st row
+            t[i][0] = t[i-1][0]+grid[i][0];
+        
+        for(int j = 1; j<n; j++) // fill 1st col
+            t[0][j] = t[0][j-1]+grid[0][j];
 
-        if(dp[i][j]!=-1){
-            return dp[i][j];
+        for(int i = 1; i<m; i++) {
+            for(int j = 1; j<n; j++) {
+                t[i][j] = grid[i][j] + min(t[i-1][j], t[i][j-1]);
+            }
         }
-
-        if(i==m-1){ // we can go only down
-            return dp[i][j]=grid[i][j]+solve(i,j+1,m,n,grid,dp);
-        }
-        else if(j==n-1){ // we can go only right
-            return dp[i][j]=grid[i][j]+solve(i+1,j,m,n,grid,dp);
-        }
-        else{
-            return dp[i][j]=grid[i][j]+min(solve(i,j+1,m,n,grid,dp),solve(i+1,j,m,n,grid,dp));
-        }
-
+        return t[m-1][n-1];
     }
     int minPathSum(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-
-        vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
-
-
-        return solve(0,0,m,n,grid,dp);
+        int m = grid.size();
+        int n = grid[0].size();
+        return DFS(grid, m, n);
     }
 };
