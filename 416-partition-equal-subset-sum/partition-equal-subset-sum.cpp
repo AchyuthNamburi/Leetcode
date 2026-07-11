@@ -1,20 +1,26 @@
 class Solution {
 public:
-    bool solve(vector<int>& nums,int n,int total_sum,vector<vector<int>>& dp){
-        if(total_sum==0) return dp[n][total_sum]=true;
-        if(n==0) return dp[n][total_sum]=false;
-
-        if(dp[n][total_sum]!=-1){
-            return dp[n][total_sum];
-        }
-
-        bool take=false;
-        if(nums[n-1]<=total_sum){
-            take=solve(nums,n-1,total_sum-nums[n-1],dp);
-        }
-        bool skip=solve(nums,n-1,total_sum,dp);
-
-        return dp[n][total_sum]=take || skip;
+    bool solve(vector<int>& nums,int n,int total_sum,vector<vector<bool>>& dp){
+        for(int i=0;i<=n;i++){
+         for(int j=0;j<=total_sum;j++){
+             if(j==0){ // total_sum=0 we can get with any elem so TRUE
+                 dp[i][j]=true;
+             }
+         }
+     }
+     
+     for(int i=1;i<=n;i++){
+         for(int j=1;j<=total_sum;j++){
+             if(nums[i-1]<=j){
+                dp[i][j]=dp[i-1][j-nums[i-1]] || dp[i-1][j];
+            }
+            else {
+                dp[i][j]=dp[i-1][j];
+            }
+         }
+     }
+     
+     return dp[n][total_sum];
     }
 
     bool canPartition(vector<int>& nums) {
@@ -25,7 +31,7 @@ public:
             total_sum+=it;
         }
 
-        vector<vector<int>> dp(n+1,vector<int> (total_sum/2+1,-1));
+        vector<vector<bool>> dp(n+1, vector<bool>(total_sum/2+1, false));
 
         if(total_sum%2!=0) return false;
 
