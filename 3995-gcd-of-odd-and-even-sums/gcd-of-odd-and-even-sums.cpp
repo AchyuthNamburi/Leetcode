@@ -1,5 +1,9 @@
 class Solution {
-public:
+public: 
+    int findGCD(int a,int b){
+        if(b==0) return a;
+        return findGCD(b,a%b);
+    }
     int gcdOfOddEvenSums(int n) {
         int temp=n;
         int sumOdd=0;
@@ -22,6 +26,6 @@ public:
         }
          cout<<sumOdd;
 
-        return gcd(sumEven,sumOdd);
+        return findGCD(sumEven,sumOdd);
     }
 };
