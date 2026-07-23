@@ -9,7 +9,7 @@ public:
         int sum=0;
         while(x){
             int last=x%10;
-            sum+=pow(last,2);
+            sum+=last * last;
             x/=10;
         }
 
