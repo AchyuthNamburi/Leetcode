@@ -13,7 +13,7 @@ public:
         if(sum>target) return; // dont forget this 
 
         for(int i=idx;i<candidates.size();i++){
-            if(i>idx && candidates[i]==candidates[i-1]) continue;
+            if(i>idx && candidates[i]==candidates[i-1]) continue; // removing duplicates
 
             if(sum + candidates[i] > target) break; // pruning
 
@@ -25,8 +25,6 @@ public:
             //as this is another approach of solving recursive problem
         
         }
-
-        
 
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
