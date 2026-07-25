@@ -27,7 +27,7 @@ public:
 
         }
 
-        board[i][j]=temp;
+        board[i][j]=temp; // backtrack
 
         return false;
     }
