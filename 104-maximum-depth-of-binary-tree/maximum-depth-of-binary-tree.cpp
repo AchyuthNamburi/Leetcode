@@ -13,8 +13,7 @@ class Solution {
 public:
     int solve(TreeNode * root){
         if(root==NULL) return 0;
-
-
+        
         int left_ht=1+solve(root->left);
         int right_ht=1+solve(root->right);
 
