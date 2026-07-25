@@ -17,13 +17,13 @@ public:
             return 0;
         }
 
-        int left_ht=1+solve(root->left);
-        int right_ht=1+solve(root->right);
+        int left_ht=solve(root->left); //left ht
 
-        maxDia=max(maxDia,left_ht+right_ht-2); // observe we are solving the maxDia using height of the tree. 
-        //but in the question it is asked using the no of edges ....so we did -2 (one for left and one for right)
+        int right_ht=solve(root->right);  //right ht
 
-        return max(left_ht,right_ht);
+        maxDia=max(maxDia,left_ht+right_ht); 
+
+        return 1+max(left_ht,right_ht); 
     }
     int diameterOfBinaryTree(TreeNode* root) {
         maxDia=0;
