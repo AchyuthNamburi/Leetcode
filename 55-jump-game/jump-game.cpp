@@ -1,17 +1,24 @@
 class Solution {
 public:
-    bool canJump(vector<int>& nums) {
-        int n=nums.size();
+    bool solve(vector<int>& nums,int idx,int n, vector<int>& dp){
+        if(idx==n-1) return true;
 
-        int reachable_idx=0;
-
-        for(int i=0;i<n;i++){
-            if(i>reachable_idx) return false;
-            reachable_idx=max(reachable_idx,i+nums[i]);
+        if(dp[idx]!=-1){
+            return dp[idx];
         }
 
-        return true;
+        for(int i=1;i<=nums[idx];i++){
+            if(solve(nums,idx+i,n,dp)){
+                return dp[idx]=true;
+            } 
+        }
 
-        
+        return dp[idx]=false;
+    }
+    bool canJump(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n,-1);
+
+        return solve(nums,0,n,dp);
     }
 };
