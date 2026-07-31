@@ -1,21 +1,10 @@
 class Solution {
 public:
     vector<vector<int>> dir={{0,1},{0,-1},{1,0},{-1,0}};
-    void bfs(int i,int j,vector<vector<char>>& board){
+    void bfs(queue<pair<int,int>> &q,vector<vector<char>>& board){
         int m=board.size();
         int n=board[0].size();
 
-        queue<pair<int,int>> q;
-        // push all the boundary safe cells 
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if((i==0 || i==m-1 || j==0 || j==n-1) && (board[i][j]=='O')){
-                    board[i][j]='#'; // mark them as safe
-                     q.push({i,j});
-                }
-            }
-        }
-    
         while(!q.empty()){
             auto it =q.front();
             int x=it.first;
@@ -38,13 +27,17 @@ public:
         int m=board.size();
         int n=board[0].size();
 
-        for(int i=0;i<m;i++){
+         queue<pair<int,int>> q;
+          // push all the boundary safe cells 
+         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(board[i][j]=='O'){
-                    bfs(i,j,board);
+                if((i==0 || i==m-1 || j==0 || j==n-1) && (board[i][j]=='O')){
+                    board[i][j]='#'; // mark them as safe
+                     q.push({i,j});
                 }
             }
         }
+        bfs(q,board);
 
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
