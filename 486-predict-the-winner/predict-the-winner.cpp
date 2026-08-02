@@ -1,25 +1,22 @@
 class Solution {
 public:
-    // Returns the maximum score difference
-    // (current player score - opponent score)
-    int solve(vector<int>& nums, int left, int right) {
+    int solve(int i,int j,vector<int>& nums){
+        if(i>j) return 0;
+        if(i==j) return nums[i];
 
-        // Only one element left
-        if (left == right)
-            return nums[left];
+        int take_i=nums[i]+min(solve(i+2,j,nums),solve(i+1,j-1,nums));
+        int take_j=nums[j]+min(solve(i,j-2,nums),solve(i+1,j-1,nums));
 
-        // Pick left
-        int pickLeft = nums[left] - solve(nums, left + 1, right);
+        return max(take_i,take_j);
 
-        // Pick right
-        int pickRight = nums[right] - solve(nums, left, right - 1);
-
-        // Choose the better option
-        return max(pickLeft, pickRight);
     }
-
     bool predictTheWinner(vector<int>& nums) {
+        int n=nums.size();
 
-        return solve(nums, 0, nums.size() - 1) >= 0;
+        int total_score=accumulate(nums.begin(),nums.end(),0);
+        int player1=solve(0,n-1,nums);
+        int player2=total_score-player1;
+
+        return player1>=player2;
     }
 };
