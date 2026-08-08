@@ -1,25 +1,27 @@
 class Solution {
 public:
-    int DFS(vector<vector<int>>& grid, int m, int n) {
-        vector<vector<int>> t(m, vector<int>(n));
-        t[0][0] = grid[0][0];
-        
-        for(int i = 1; i<m; i++) // fill 1st row
-            t[i][0] = t[i-1][0]+grid[i][0];
-        
-        for(int j = 1; j<n; j++) // fill 1st col
-            t[0][j] = t[0][j-1]+grid[0][j];
+    int dp[202][202];
+    int solve(int r,int c,int m,int n,vector<vector<int>>& grid){
+        if(r==m-1 && c==n-1) return grid[r][c];
+        if(r>=m || c>=n) return INT_MAX;
 
-        for(int i = 1; i<m; i++) {
-            for(int j = 1; j<n; j++) {
-                t[i][j] = grid[i][j] + min(t[i-1][j], t[i][j-1]);
-            }
-        }
-        return t[m-1][n-1];
+        if(dp[r][c]!=-1) return dp[r][c];
+
+        int sum=0;
+        sum+=grid[r][c];
+        int f1=solve(r+1,c,m,n,grid);
+        int f2=solve(r,c+1,m,n,grid);
+
+        sum+=min(f1,f2);
+        return dp[r][c]=sum;
+        
     }
     int minPathSum(vector<vector<int>>& grid) {
-        int m = grid.size();
-        int n = grid[0].size();
-        return DFS(grid, m, n);
+        int m=grid.size();
+        int n=grid[0].size();
+        memset(dp,-1,sizeof(dp));
+
+        return solve(0,0,m,n,grid);
+        
     }
 };
