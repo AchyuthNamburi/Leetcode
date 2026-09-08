@@ -1,15 +1,18 @@
 class Solution {
 public:
-    const bool compare(pair<int,int> d_a, pair<int,int> d_b){
-        if(abs(d_a.first)<abs(d_b.first)) return d_a.first;
-        else if(abs(d_a.first)==abs(d_b.first) && d_a.second<d_b.second) return d_a.first;
-        return d_b.first; 
+    struct compare {
+    bool operator()(pair<int,int> a, pair<int,int> b) {
+        if (a.first != b.first)
+            return a.first > b.first;
 
-    }
+        return a.second > b.second;
+        }
+    };
+    
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
         int n=arr.size();
         // dist,elem
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,compare> pq;
 
         for(int i=0;i<n;i++){
             int diff=abs(arr[i]-x);
