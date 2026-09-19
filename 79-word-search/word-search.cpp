@@ -1,44 +1,38 @@
 class Solution {
 public:
-    int m,n;
-    vector<vector<int>> dir={{1,0},{-1,0},{0,1},{0,-1}};
-    bool find(vector<vector<char>>& board,int i,int j,int idx,string word){
-        if(idx==word.length()){
-            return true;
-        }
+    vector<vector<int>> dir={{-1,0},{1,0},{0,1},{0,-1}};
 
-        if(i<0 || j<0 || i>=m || j>=n || board[i][j]=='$'){
-            return false;
-        }
+    bool solve(int idx,int x,int y,string & word,vector<vector<char>>& board,vector<vector<int>>& visited){
 
-        if(board[i][j]!=word[idx]){
-            return false;
-        }
+        int m=board.size();
+        int n=board[0].size();
+        if(idx==word.size()) return true;
 
-        char temp=board[i][j];
-        board[i][j] = '$';   // Mark as visited
+        for(int i=0;i<4;i++){
+            int new_x=x+dir[i][0];
+            int new_y=y+dir[i][1];
 
-        for(auto &it:dir){
-            int new_i=i+it[0];
-            int new_j=j+it[1];
-            if(find(board,new_i,new_j,idx+1,word)){
-                return true;
+            if(new_x<m && new_x>=0 && new_y>=0 && new_y<n && !visited[new_x][new_y] && board[new_x][new_y]==word[idx]){
+                visited[new_x][new_y]=1;
+                if(solve(idx+1,new_x,new_y,word,board,visited)) return true;
+                visited[new_x][new_y]=0; //BT
             }
-
         }
-
-        board[i][j]=temp; // backtrack
 
         return false;
     }
     bool exist(vector<vector<char>>& board, string word) {
-        m=board.size();
-        n=board[0].size();
+        //BFS logic 
+        int m=board.size();
+        int n=board[0].size();
+        vector<vector<int>> visited(m,vector<int>(n,0));
 
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(board[i][j]==word[0] && find(board,i,j,0,word)){
-                    return true;
+                if(board[i][j]==word[0]){
+                    visited[i][j]=1;
+                    if(solve(1,i,j,word,board,visited)) return true;
+                    visited[i][j]=0; //BT
                 }
             }
         }
