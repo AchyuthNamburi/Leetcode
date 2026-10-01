@@ -12,41 +12,38 @@
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        
+        // traverse level wise and at alternative level reverse push the elem into the ans
 
         vector<vector<int>> ans;
-
-        if(root==NULL) return {};
-
+        if(!root) return ans;
         queue<TreeNode*> q;
         q.push(root);
-
         int level=0;
+
         while(!q.empty()){
             vector<int> temp;
+            
             int size=q.size();
-
+            //for loop is used to traverse level wise 
             for(int i=0;i<size;i++){
-                TreeNode* curr_elem=q.front();
+                TreeNode* curr=q.front();
                 q.pop();
-                if(curr_elem){
-                    temp.push_back(curr_elem->val);
+                if(curr){
+                    temp.push_back(curr->val);
                 }
-                if(curr_elem->left){
-                    q.push(curr_elem->left);
+                if(curr->left){
+                    q.push(curr->left);
                 }
-                if(curr_elem->right){
-                     q.push(curr_elem->right);
-                }  
+                if(curr->right){
+                    q.push(curr->right);
+                }
             }
             level++;
             if(level%2==0){
                 reverse(temp.begin(),temp.end());
             }
             ans.push_back(temp);
-
         }
-        
 
         return ans;
     }
