@@ -1,26 +1,26 @@
 class Solution {
 public:
     string removeOuterParentheses(string s) {
-        stack<char> st;
+        // approach using counter 
+        // ( ---> +1
+        // ) ----> -1
+        // if the counter value is not 0 then add it to the ans 
+
+        int counter=0;
         string ans="";
 
-        for(auto ch:s){
+        for(auto ch : s){
             if(ch=='('){
-                if(st.empty()){
-                    st.push(ch);
-                }
-                else{
-                    st.push(ch);
+                if(counter!=0) ans+=ch; 
+                counter++;
+            }
+            else{
+                counter--;
+                if(counter!=0){
                     ans+=ch;
                 }
             }
-            else{
-                st.pop();
-                if(!st.empty())
-                    ans += ')';
-            }  
         }
-
         return ans;
     }
 };
