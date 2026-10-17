@@ -1,46 +1,36 @@
 class LRUCache {
 public:
-    
     list<int> dll; 
-    // In map we are storing [key,{address,value}]
-    map<int,pair<list<int>::iterator,int>> cache; // ::iterator is datatype (which store address of the node in LL);
-    int capacity;
+    map<int,pair<list<int>::iterator,int>> m ;
+    int n;
 
     LRUCache(int capacity) {
-        this->capacity=capacity;
-    }
-
-    void makeMostRecentlyUsed(int key){
-        dll.erase(cache[key].first); // delete that address
-        dll.push_front(key); // push it into front ...so that it feels like most recently used elem are at front . so that we can remove from last !
-
-        cache[key].first=dll.begin();
+        n=capacity;
     }
     
     int get(int key) {
-        if(!cache.count(key)){
-            return -1;
-        }
-
-        makeMostRecentlyUsed(key);
-        return cache[key].second; // returning the value
+        if(m.find(key)==m.end()) return -1;
+        int value=m[key].second;
+        dll.erase(m[key].first);
+        dll.push_front(key);
+        m[key].first=dll.begin();
+        
+        return value;
     }
     
     void put(int key, int value) {
-        if(cache.count(key)){
-            cache[key].second=value;
-            makeMostRecentlyUsed(key);
+        if(m.find(key)!=m.end()){
+            dll.erase(m[key].first);
+            dll.push_front(key);
+            m[key]={dll.begin(),value};
         }
         else{
+            if(dll.size()==n){
+                m.erase(dll.back());
+                dll.pop_back();
+            }
             dll.push_front(key);
-            cache[key]={dll.begin(),value};
-            capacity--;
-        }
-
-        if(capacity < 0){
-            cache.erase(dll.back());
-            dll.pop_back();
-            capacity++;
+            m[key]={dll.begin(),value};
         }
     }
 };
