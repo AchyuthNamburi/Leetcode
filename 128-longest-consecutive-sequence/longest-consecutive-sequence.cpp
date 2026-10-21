@@ -6,8 +6,8 @@ public:
     int longestConsecutive(vector<int>& nums) {
         int n=nums.size();
 
-        if(n==0) return 0;
-        
+        if(n==0) return 0; // basecase
+
         unordered_set<int> st;
 
         for(auto it :nums){
