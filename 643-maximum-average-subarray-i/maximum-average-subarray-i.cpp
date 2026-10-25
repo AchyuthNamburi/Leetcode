@@ -9,7 +9,7 @@ public:
         double sum=0;
 
         while(j<n){
-            sum+=nums[j];
+            sum+=nums[j]; // dont calc avg here !
             
             if(j-i+1<k){
                 j++;
