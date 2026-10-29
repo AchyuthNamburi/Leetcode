@@ -27,10 +27,6 @@ public:
        inorder(root,ans);
         int sum=0;
 
-        for(auto it : ans){
-            cout<<it;
-        }
-
         for(int i=0;i<ans.size();i++){
             if(ans[i]>=low && ans[i]<=high){
                 sum+=ans[i];
