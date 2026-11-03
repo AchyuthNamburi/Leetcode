@@ -11,24 +11,22 @@
  */
 class Solution {
 public:
-    int maxDia;
-    int solve(TreeNode * root){
-        if(root==NULL){
-            return 0;
-        }
+    int maxii;
+    int solve(TreeNode* root){
+        if(!root) return 0;
 
-        int left_ht=solve(root->left); //left ht
+        int left=solve(root->left);
+        int right=solve(root->right);
 
-        int right_ht=solve(root->right);  //right ht
+        maxii=max(maxii,left+right);
 
-        maxDia=max(maxDia,left_ht+right_ht); 
-
-        return 1+max(left_ht,right_ht); 
+        return 1+max(left,right);
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        maxDia=0;
+        maxii=0;
+
         solve(root);
 
-        return maxDia;
+        return maxii;
     }
 };
