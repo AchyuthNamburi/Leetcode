@@ -3,28 +3,26 @@ public:
     bool solve(vector<int>& nums, int target,int low,int high){
         while(low<=high){
             int mid=low+(high-low)/2;
-            if(nums[mid]==target){
-                return true;
-            }
 
-            if(nums[mid]==nums[low] && nums[mid]==nums[high]){ 
+            if(nums[mid]==target) return true;
+
+            // Handle duplicates
+            if (nums[low] == nums[mid] && nums[mid] == nums[high]) {
                 low++;
                 high--;
-                continue; // when all three values are equal then only we cannot distinguish which part is sorted 
             }
             
-
-            //check if the left part is sorted or right part
-            if(nums[mid] >= nums[low]){
-                if(nums[mid] > target && target>=nums[low]){ //if left sorted
+            else if(nums[low]<=nums[mid]){ //left sorted
+                if(target>=nums[low] && target<nums[mid]){
                     high=mid-1;
                 }
                 else{
                     low=mid+1;
                 }
             }
-            else{                                                  // if right sorted
-                if(nums[mid] < target && target <= nums[high]){ 
+
+            else{
+                if(target>nums[mid] && target<=nums[high]){
                     low=mid+1;
                 }
                 else{
